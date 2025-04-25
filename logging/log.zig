@@ -40,7 +40,7 @@ pub fn logFn(comptime level: LogLevel, comptime scope: @Type(.enum_literal), com
     };
     defer it.deinit();
 
-    while (it.next()) |return_address| {
+    while (it.?.next()) |return_address| {
         const addr = if (return_address == 0) return_address else return_address - 1;
         if (getLogInfo(debug_info, addr, std.io.getStdErr().writer())) break;
     }
