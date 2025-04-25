@@ -23,7 +23,9 @@ fn getLogInfo(debug_info: *std.debug.SelfInfo, address: usize, stream: anytype) 
     const sym = mod.getSymbolAtAddress(debug_info.allocator, address) catch return false;
     defer sym.deinit(debug_info.allocator);
 
-    stream.print("|{s} {d}:{d}| ", .{ sym.file_name, sym.line, sym.column });
+    const src_loc = sym.source_location.?;
+
+    stream.print("|{s} {d}:{d}| ", .{ src_loc.file_name, src_loc.line, src_loc.column });
     return true;
 }
 
