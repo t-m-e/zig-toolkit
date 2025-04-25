@@ -23,12 +23,8 @@ fn getLogInfo(debug_info: *std.debug.SelfInfo, address: usize, stream: anytype) 
     const sym = mod.getSymbolAtAddress(debug_info.allocator, address) catch return false;
     defer sym.deinit(debug_info.allocator);
 
-    if (sym.line_info(debug_info.allocator)) |li| {
-        if (std.mem.indexOf(u8, li.file_name, "std" ++ std.fs.path.sep_str ++ "log.zig") != null) return false;
-        stream.print("|{s} {d}:{d}| ", .{ li.file_name, li.line, li.column });
-        return true;
-    }
-    return false;
+    stream.print("|{s} {d}:{d}| ", .{ sym.file_name, sym.line, sym.column });
+    return true;
 }
 
 pub fn logFn(comptime level: LogLevel, comptime scope: @Type(.enum_literal), comptime format: []const u8, args: anytype) void {
