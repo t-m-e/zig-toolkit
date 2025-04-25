@@ -18,30 +18,29 @@ pub const LogLevel = enum {
     }
 };
 
-fn getLogInfo(debug_info: *std.debug.SelfInfo, address: usize, stream: anytype) bool {
-    const mod = debug_info.getModuleForAddress(address) catch return false;
-    const sym = mod.getSymbolAtAddress(debug_info.allocator, address) catch return false;
-    defer sym.deinit(debug_info.allocator);
-
-    const src_loc = sym.source_location.?;
-
-    stream.print("|{s} {d}:{d}| ", .{ src_loc.file_name, src_loc.line, src_loc.column });
-    return true;
-}
+// fn getLogInfo(debug_info: *std.debug.SelfInfo, address: usize, stream: anytype) bool {
+//     const mod = debug_info.getModuleForAddress(address) catch return false;
+//     const sym = mod.getSymbolAtAddress(debug_info.allocator, address) catch return false;
+//
+//     const src_loc = sym.source_location.?;
+//
+//     stream.print("|{s} {d}:{d}| ", .{ src_loc.file_name, src_loc.line, src_loc.column }) catch return false;
+//     return true;
+// }
 
 pub fn logFn(comptime level: LogLevel, comptime scope: @Type(.enum_literal), comptime format: []const u8, args: anytype) void {
-    const debug_info = std.debug.getSelfDebugInfo() catch unreachable;
-    const context: std.debug.ThreadContext = undefined;
-    _ = std.debug.getContext(@constCast(&context));
-    var it = blk: {
-        break :blk std.debug.StackIterator.initWithContext(null, debug_info, @constCast(&context)) catch null;
-    };
-    defer it.deinit();
+    // const debug_info = std.debug.getSelfDebugInfo() catch unreachable;
+    // const context: std.debug.ThreadContext = undefined;
+    // _ = std.debug.getContext(@constCast(&context));
+    // var it = blk: {
+    //     break :blk std.debug.StackIterator.initWithContext(null, debug_info, @constCast(&context)) catch null;
+    // };
+    // defer it.?.deinit();
 
-    while (it.?.next()) |return_address| {
-        const addr = if (return_address == 0) return_address else return_address - 1;
-        if (getLogInfo(debug_info, addr, std.io.getStdErr().writer())) break;
-    }
+    // while (it.?.next()) |return_address| {
+    //     const addr = if (return_address == 0) return_address else return_address - 1;
+    //     if (getLogInfo(debug_info, addr, std.io.getStdErr().writer())) break;
+    // }
 
     const scope_prefix = "{{" ++ @tagName(scope) ++ "}} ";
     const prefix = "[" ++ comptime level.text() ++ "] " ++ scope_prefix;
