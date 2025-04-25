@@ -36,7 +36,7 @@ pub fn logFn(comptime level: LogLevel, comptime scope: @Type(.enum_literal), com
     const context: std.debug.ThreadContext = undefined;
     _ = std.debug.getContext(@constCast(&context));
     var it = blk: {
-        break :blk std.debug.StackIterator.initWithContext(null, debug_info, &context) catch null;
+        break :blk std.debug.StackIterator.initWithContext(null, debug_info, @constCast(&context)) catch null;
     };
     defer it.deinit();
 
