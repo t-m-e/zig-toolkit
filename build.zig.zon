@@ -1,7 +1,7 @@
 .{
-    .name = "toolkit",
+    .name = .zig_toolkit,
+    .fingerprint = 0xc23e39bc074a438c,
     .version = "0.1.0",
-    .minimum_zig_version = "0.14.0",
     .dependencies = .{},
     .paths = .{""},
 }
