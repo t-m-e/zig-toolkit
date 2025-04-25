@@ -34,7 +34,7 @@ fn getLogInfo(debug_info: *std.debug.SelfInfo, address: usize, stream: anytype) 
 pub fn logFn(comptime level: LogLevel, comptime scope: @Type(.enum_literal), comptime format: []const u8, args: anytype) void {
     const debug_info = std.debug.getSelfDebugInfo() catch unreachable;
     const context: std.debug.ThreadContext = undefined;
-    _ = std.debug.getContext(&context);
+    _ = std.debug.getContext(@constCast(&context));
     var it = blk: {
         break :blk std.debug.StackIterator.initWithContext(null, debug_info, &context) catch null;
     };
